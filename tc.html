@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>TelegramCloud - 将 Telegram 变成你的私人云盘</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2c3e50;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 60px 20px 30px;
+        }
+
+        .logo {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 25px;
+            background: #ffffffdd;
+            border-radius: 22px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo img {
+            width: 65px;
+            height: 65px;
+            object-fit: contain;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2a6df4, #1e3c72);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: #506e8c;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: white;
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #2c3e50;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin: 0 5px 10px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 14px 36px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+            margin: 15px 10px;
+        }
+
+        .btn-primary {
+            background: #2a6df4;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #1a52c2;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(42,109,244,0.35);
+        }
+
+        .btn-outline {
+            background: white;
+            color: #2a6df4;
+            border: 2px solid #2a6df4;
+        }
+        .btn-outline:hover {
+            background: #f0f6ff;
+            transform: translateY(-2px);
+        }
+
+        /* Features */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 50px 0;
+        }
+
+        .feature-card {
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 30px 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+            transition: transform 0.25s;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        .feature-icon {
+            font-size: 2.3rem;
+            margin-bottom: 16px;
+        }
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+        .feature-card p {
+            color: #4a6279;
+        }
+
+        /* Setup Guide (for modal reuse) */
+        .setup-guide {
+            background: rgba(255,255,255,0.65);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 40px 35px;
+            margin: 40px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .setup-guide h2 {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: #1e3c72;
+        }
+        .guide-content {
+            max-width: 750px;
+            margin: 0 auto;
+        }
+        .guide-step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 28px;
+        }
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: #2a6df4;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            margin-right: 20px;
+            margin-top: 3px;
+        }
+        .step-text strong {
+            display: block;
+            font-size: 1.15rem;
+            margin-bottom: 5px;
+        }
+        .step-text p {
+            color: #4a6279;
+        }
+        .step-text a {
+            color: #2a6df4;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        .step-text a:hover {
+            text-decoration: underline;
+        }
+        .step-text code {
+            background: #ecf2fc;
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            color: #2a6df4;
+        }
+
+        /* Screenshot section */
+        .screenshots {
+            margin: 50px 0;
+        }
+        .screenshots h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 25px;
+            color: #1e3c72;
+        }
+        .screenshot-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .screenshot-placeholder {
+            background: white;
+            border-radius: 18px;
+            padding: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            max-width: 400px;
+            flex: 1 1 300px;
+            text-align: center;
+        }
+        .img-box {
+            width: 100%;
+            height: 220px;
+            background: #eef2f6;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            cursor: pointer;
+            transition: box-shadow 0.3s;
+        }
+        .img-box:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .screenshot-placeholder small {
+            display: block;
+            margin-top: 8px;
+            color: #506e8c;
+        }
+
+        /* Lightbox (modal) for images */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .lightbox.active {
+            display: flex;
+        }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 85vh;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            font-size: 2.5rem;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .lightbox-close:hover {
+            color: #ccc;
+        }
+
+        /* Guide Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal.active {
+            display: flex;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 24px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 40px 35px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 2rem;
+            color: #aaa;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .modal-close:hover {
+            color: #2a6df4;
+        }
+        .modal-content h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #1e3c72;
+            font-size: 1.6rem;
+        }
+
+        /* Download section */
+        .download {
+            text-align: center;
+            margin: 60px 0 40px;
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 45px 25px;
+        }
+        .download p {
+            max-width: 550px;
+            margin: 0 auto 25px;
+            color: #3b5670;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: #7b8ea1;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            h1 { font-size: 2.2rem; }
+            .btn { padding: 12px 28px; font-size: 1rem; }
+            .guide-step { flex-direction: column; }
+            .step-number { margin-bottom: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <img src="https://cdn.jsdelivr.net/gh/ydtg1993/telegram_cloud@main/tc.png" alt="TelegramCloud Logo">
+            </div>
+            <h1>TelegramCloud</h1>
+            <div class="subtitle">把 Telegram 变成无限容量的个人云盘，自动同步、多端管理，安全又高速。</div>
+            <div>
+                <span class="badge">🖥️ Windows</span>
+                <span class="badge">🌐 Telegram MTProto</span>
+                <span class="badge">🔒 端到端加密</span>
+            </div>
+        </header>
+
+        <!-- Features -->
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">📁</div>
+                <h3>文件管理</h3>
+                <p>支持图标 / 列表双视图，拖拽移动、批量删除、重命名，像本地资源管理器一样操作云端文件。</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔄</div>
+                <h3>自动同步</h3>
+                <p>添加本地文件夹，按分钟/小时/天定时同步到 Telegram 目录，后台静默运行，不影响前台工作。</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">👀</div>
+                <h3>文件预览</h3>
+                <p>支持图片、音频（带进度条）、视频、文本文件的在线预览，20MB 以下文件即点即看。</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>上传限制</h3>
+                <p>可启用每日上传大小/数量限制，基于北京时间统计，侧边栏滑块实时显示用量。</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔍</div>
+                <h3>智能搜索</h3>
+                <p>文件名模糊搜索，数据量大时自动启用 jieba 分词 + 倒排索引，快速精准定位文件。</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌍</div>
+                <h3>中英文切换</h3>
+                <p>完整支持中文 / English 界面，一键切换，重启生效。</p>
+            </div>
+        </div>
+
+        <!-- Screenshots -->
+        <div class="screenshots">
+            <h2>软件截图</h2>
+            <div class="screenshot-grid">
+                <div class="screenshot-placeholder">
+                    <div class="img-box">
+                        <img src="https://cdn.jsdelivr.net/gh/ydtg1993/telegram_cloud@main/Capture1.PNG" alt="主界面 - 文件浏览与目录树">
+                    </div>
+                    <small>主界面 - 文件浏览与目录树</small>
+                </div>
+                <div class="screenshot-placeholder">
+                    <div class="img-box">
+                        <img src="https://cdn.jsdelivr.net/gh/ydtg1993/telegram_cloud@main/Capture2.PNG" alt="自动同步配置界面">
+                    </div>
+                    <small>自动同步配置界面</small>
+                </div>
+                <div class="screenshot-placeholder">
+                    <div class="img-box">
+                        <img src="https://cdn.jsdelivr.net/gh/ydtg1993/telegram_cloud@main/Capture3.PNG" alt="图片 / 视频在线预览">
+                    </div>
+                    <small>图片 / 视频在线预览</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Setup Guide (also shown in modal) -->
+        <div class="setup-guide" id="static-guide">
+            <h2>📋 首次使用：获取 Telegram API 凭据</h2>
+            <div class="guide-content">
+                <div class="guide-step">
+                    <div class="step-number">1</div>
+                    <div class="step-text">
+                        <strong>访问 Telegram 开发平台</strong>
+                        <p>打开 <a href="https://my.telegram.org" target="_blank">https://my.telegram.org</a>，使用你的 Telegram 账号登录（需要手机接收验证码）。</p>
+                    </div>
+                </div>
+                <div class="guide-step">
+                    <div class="step-number">2</div>
+                    <div class="step-text">
+                        <strong>创建应用</strong>
+                        <p>登录后点击 “API development tools”，填写应用名称（如 “TelegramCloud”）和短名称，提交后即可获得 <code>api_id</code> 和 <code>api_hash</code>。</p>
+                    </div>
+                </div>
+                <div class="guide-step">
+                    <div class="step-number">3</div>
+                    <div class="step-text">
+                        <strong>在软件中填写</strong>
+                        <p>打开 TelegramCloud，在弹出的登录窗口中输入刚才获得的 <code>api_id</code>、<code>api_hash</code> 以及你的手机号码，完成验证即可开始使用。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Download -->
+        <div class="download">
+            <h2 style="font-size: 2rem; margin-bottom: 15px;">立即下载</h2>
+            <p>完全免费，开源项目。Windows 安装包，支持自定义安装路径和开机自启。</p>
+            <div style="display: flex; justify-content: center; flex-wrap: wrap; align-items: center;">
+                <a href="https://github.com/ydtg1993/telegram_cloud/releases/download/v1.1.0/TelegramCloud_Setup.exe" class="btn btn-primary" target="_blank">
+                    ⬇️ 下载安装包
+                </a>
+                <button class="btn btn-outline" id="show-guide-btn">
+                    📋 账号注册
+                </button>
+            </div>
+            <p style="margin-top: 20px; font-size: 0.9rem;">
+                当前版本 v1.1.0 · 适用于 Windows 10/11
+            </p>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>© 2025 TelegramCloud. 基于 PySide6 + Pyrogram 构建。使用 Telegram 服务请遵守其服务条款。</p>
+        </footer>
+    </div>
+
+    <!-- Lightbox for images -->
+    <div id="lightbox" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <img src="" alt="预览大图" id="lightbox-img">
+    </div>
+
+    <!-- Guide Modal -->
+    <div id="guide-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h2>📋 Telegram API 凭据获取教程</h2>
+            <div class="guide-content">
+                <div class="guide-step">
+                    <div class="step-number">1</div>
+                    <div class="step-text">
+                        <strong>访问 Telegram 开发平台</strong>
+                        <p>打开 <a href="https://my.telegram.org" target="_blank">https://my.telegram.org</a>，使用你的 Telegram 账号登录（需要手机接收验证码）。</p>
+                    </div>
+                </div>
+                <div class="guide-step">
+                    <div class="step-number">2</div>
+                    <div class="step-text">
+                        <strong>创建应用</strong>
+                        <p>登录后点击 “API development tools”，填写应用名称（如 “TelegramCloud”）和短名称，提交后即可获得 <code>api_id</code> 和 <code>api_hash</code>。</p>
+                    </div>
+                </div>
+                <div class="guide-step">
+                    <div class="step-number">3</div>
+                    <div class="step-text">
+                        <strong>在软件中填写</strong>
+                        <p>打开 TelegramCloud，在弹出的登录窗口中输入刚才获得的 <code>api_id</code>、<code>api_hash</code> 以及你的手机号码，完成验证即可开始使用。</p>
+                    </div>
+                </div>
+                <div class="guide-step">
+                    <div class="step-number">💡</div>
+                    <div class="step-text">
+                        <strong>注意事项</strong>
+                        <p>请妥善保管你的 <code>api_id</code> 和 <code>api_hash</code>，不要泄露给他人。每个账号可以创建多个应用，如果遇到问题可重新创建。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Image lightbox
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxClose = document.querySelector('.lightbox-close');
+
+        document.querySelectorAll('.img-box img').forEach(img => {
+            img.addEventListener('click', () => {
+                lightboxImg.src = img.src;
+                lightboxImg.alt = img.alt;
+                lightbox.classList.add('active');
+            });
+        });
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+        }
+
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeLightbox();
+                closeModal();
+            }
+        });
+
+        // Guide modal
+        const modal = document.getElementById('guide-modal');
+        const showGuideBtn = document.getElementById('show-guide-btn');
+        const modalClose = document.querySelector('.modal-close');
+
+        function openModal() {
+            modal.classList.add('active');
+        }
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        showGuideBtn.addEventListener('click', openModal);
+        modalClose.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+    </script>
+</body>
+</html>
