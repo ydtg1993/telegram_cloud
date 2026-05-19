@@ -37,7 +37,7 @@
             margin: 0 auto 25px;
             background: #ffffffdd;
             border-radius: 22px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -72,7 +72,7 @@
             font-size: 0.9rem;
             font-weight: 500;
             color: #2c3e50;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
             margin: 0 5px 10px;
         }
 
@@ -87,7 +87,7 @@
             cursor: pointer;
             text-decoration: none;
             transition: all 0.25s ease;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
             margin: 15px 10px;
         }
 
@@ -98,7 +98,7 @@
         .btn-primary:hover {
             background: #1a52c2;
             transform: translateY(-2px);
-            box-shadow: 0 12px 25px rgba(42,109,244,0.35);
+            box-shadow: 0 12px 25px rgba(42, 109, 244, 0.35);
         }
 
         .btn-outline {
@@ -120,11 +120,11 @@
         }
 
         .feature-card {
-            background: rgba(255,255,255,0.8);
+            background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(12px);
             border-radius: 24px;
             padding: 30px 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
             transition: transform 0.25s;
         }
         .feature-card:hover {
@@ -144,12 +144,12 @@
 
         /* Setup Guide (for modal reuse) */
         .setup-guide {
-            background: rgba(255,255,255,0.65);
+            background: rgba(255, 255, 255, 0.65);
             backdrop-filter: blur(10px);
             border-radius: 28px;
             padding: 40px 35px;
             margin: 40px 0;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
         }
         .setup-guide h2 {
             text-align: center;
@@ -205,6 +205,40 @@
             color: #2a6df4;
         }
 
+        /* Step image styles (for modal tutorial images) */
+        .step-image-wrapper {
+            text-align: center;
+            margin-top: 18px;
+            margin-bottom: 6px;
+        }
+        .step-image-wrapper img {
+            display: block;
+            max-width: 100%;
+            width: auto;
+            max-height: 280px;
+            margin: 0 auto;
+            border-radius: 14px;
+            border: 2px solid #e8edf3;
+            box-shadow: 0 6px 22px rgba(0, 0, 0, 0.10);
+            object-fit: contain;
+            background: #fafbfc;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            cursor: pointer;
+        }
+        .step-image-wrapper img:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 30px rgba(42, 109, 244, 0.20);
+            border-color: #c5d5f0;
+        }
+        .step-image-caption {
+            display: block;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #8899aa;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
         /* Screenshot section */
         .screenshots {
             margin: 50px 0;
@@ -225,7 +259,7 @@
             background: white;
             border-radius: 18px;
             padding: 10px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
             max-width: 400px;
             flex: 1 1 300px;
             text-align: center;
@@ -243,7 +277,7 @@
             transition: box-shadow 0.3s;
         }
         .img-box:hover {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
         .img-box img {
             width: 100%;
@@ -265,8 +299,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.85);
-            z-index: 9999;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 19999;
             align-items: center;
             justify-content: center;
             flex-direction: column;
@@ -278,7 +312,7 @@
             max-width: 90%;
             max-height: 85vh;
             border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
         }
         .lightbox-close {
             position: absolute;
@@ -301,7 +335,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0, 0, 0, 0.7);
             z-index: 10000;
             justify-content: center;
             align-items: center;
@@ -312,12 +346,12 @@
         .modal-content {
             background: white;
             border-radius: 24px;
-            max-width: 600px;
+            max-width: 640px;
             width: 90%;
             max-height: 85vh;
             overflow-y: auto;
             padding: 40px 35px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
             position: relative;
         }
         .modal-close {
@@ -343,7 +377,7 @@
         .download {
             text-align: center;
             margin: 60px 0 40px;
-            background: rgba(255,255,255,0.7);
+            background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(10px);
             border-radius: 30px;
             padding: 45px 25px;
@@ -364,10 +398,31 @@
 
         /* Responsive */
         @media (max-width: 640px) {
-            h1 { font-size: 2.2rem; }
-            .btn { padding: 12px 28px; font-size: 1rem; }
-            .guide-step { flex-direction: column; }
-            .step-number { margin-bottom: 10px; }
+            h1 {
+                font-size: 2.2rem;
+            }
+            .btn {
+                padding: 12px 28px;
+                font-size: 1rem;
+            }
+            .guide-step {
+                flex-direction: column;
+            }
+            .step-number {
+                margin-bottom: 10px;
+            }
+            .step-image-wrapper img {
+                max-height: 200px;
+                border-radius: 10px;
+            }
+            .modal-content {
+                padding: 28px 18px;
+                border-radius: 18px;
+            }
+            .modal-content h2 {
+                font-size: 1.35rem;
+                margin-bottom: 22px;
+            }
         }
     </style>
 </head>
@@ -461,7 +516,7 @@
                     <div class="step-number">2</div>
                     <div class="step-text">
                         <strong>创建应用</strong>
-                        <p>登录后点击 “API development tools”，填写应用名称（如 “TelegramCloud”）和短名称，提交后即可获得 <code>api_id</code> 和 <code>api_hash</code>。</p>
+                        <p>登录后点击 "API development tools"，填写应用名称（如 "TelegramCloud"）和短名称，提交后即可获得 <code>api_id</code> 和 <code>api_hash</code>。</p>
                     </div>
                 </div>
                 <div class="guide-step">
@@ -514,13 +569,21 @@
                     <div class="step-text">
                         <strong>访问 Telegram 开发平台</strong>
                         <p>打开 <a href="https://my.telegram.org" target="_blank">https://my.telegram.org</a>，使用你的 Telegram 账号登录（需要手机接收验证码）。</p>
+                        <div class="step-image-wrapper">
+                            <img src="https://cdn.jsdelivr.net/gh/ydtg1993/telegram_cloud@main/step1.PNG" alt="访问 my.telegram.org 并登录" loading="lazy">
+                            <span class="step-image-caption">▲ 示意图：使用手机号登录 my.telegram.org</span>
+                        </div>
                     </div>
                 </div>
                 <div class="guide-step">
                     <div class="step-number">2</div>
                     <div class="step-text">
                         <strong>创建应用</strong>
-                        <p>登录后点击 “API development tools”，填写应用名称（如 “TelegramCloud”）和短名称，提交后即可获得 <code>api_id</code> 和 <code>api_hash</code>。</p>
+                        <p>登录后点击 "API development tools"，填写应用名称（如 "TelegramCloud"）和短名称，提交后即可获得 <code>api_id</code> 和 <code>api_hash</code>。</p>
+                        <div class="step-image-wrapper">
+                            <img src="https://cdn.jsdelivr.net/gh/ydtg1993/telegram_cloud@main/step2.PNG" alt="创建 Telegram 应用获取凭据" loading="lazy">
+                            <span class="step-image-caption">▲ 示意图：填写应用信息并获取 api_id 与 api_hash</span>
+                        </div>
                     </div>
                 </div>
                 <div class="guide-step">
@@ -528,6 +591,10 @@
                     <div class="step-text">
                         <strong>在软件中填写</strong>
                         <p>打开 TelegramCloud，在弹出的登录窗口中输入刚才获得的 <code>api_id</code>、<code>api_hash</code> 以及你的手机号码，完成验证即可开始使用。</p>
+                        <div class="step-image-wrapper">
+                            <img src="https://cdn.jsdelivr.net/gh/ydtg1993/telegram_cloud@main/step3.PNG" alt="在 TelegramCloud 软件中填写凭据" loading="lazy">
+                            <span class="step-image-caption">▲ 示意图：在软件登录界面填入凭据完成验证</span>
+                        </div>
                     </div>
                 </div>
                 <div class="guide-step">
@@ -535,6 +602,10 @@
                     <div class="step-text">
                         <strong>注意事项</strong>
                         <p>请妥善保管你的 <code>api_id</code> 和 <code>api_hash</code>，不要泄露给他人。每个账号可以创建多个应用，如果遇到问题可重新创建。</p>
+                       <div class="step-image-wrapper">
+                            <img src="https://cdn.jsdelivr.net/gh/ydtg1993/telegram_cloud@main/step3.PNG" alt="在 TelegramCloud 软件中填写凭据" loading="lazy">
+                            <span class="step-image-caption">▲ 示意图：请妥善保管你的app_id和api_hash</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -547,13 +618,22 @@
         const lightboxImg = document.getElementById('lightbox-img');
         const lightboxClose = document.querySelector('.lightbox-close');
 
-        document.querySelectorAll('.img-box img').forEach(img => {
-            img.addEventListener('click', () => {
-                lightboxImg.src = img.src;
-                lightboxImg.alt = img.alt;
-                lightbox.classList.add('active');
+        // 为所有可点击的图片绑定lightbox（包括截图和modal中的步骤图片）
+        function bindLightboxToImages(selector) {
+            document.querySelectorAll(selector).forEach(img => {
+                img.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    lightboxImg.src = img.src;
+                    lightboxImg.alt = img.alt;
+                    lightbox.classList.add('active');
+                });
             });
-        });
+        }
+
+        // 绑定截图区域的图片
+        bindLightboxToImages('.img-box img');
+        // 绑定modal中步骤教程图片
+        bindLightboxToImages('.step-image-wrapper img');
 
         function closeLightbox() {
             lightbox.classList.remove('active');
@@ -578,15 +658,27 @@
 
         function openModal() {
             modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
         function closeModal() {
             modal.classList.remove('active');
+            document.body.style.overflow = '';
         }
 
         showGuideBtn.addEventListener('click', openModal);
         modalClose.addEventListener('click', closeModal);
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeModal();
+        });
+
+        // 点击modal中的图片时也打开lightbox预览
+        document.querySelectorAll('.step-image-wrapper img').forEach(img => {
+            img.addEventListener('click', (e) => {
+                e.stopPropagation();
+                lightboxImg.src = img.src;
+                lightboxImg.alt = img.alt;
+                lightbox.classList.add('active');
+            });
         });
     </script>
 </body>
