@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>TelegramCloud - 将 Telegram 变成你的私人云盘</title>
+    <title data-i18n="pageTitle">TelegramCloud - Turn Telegram into Your Private Cloud Drive</title>
     <style>
         * {
             margin: 0;
@@ -17,6 +17,53 @@
             color: #2c3e50;
             line-height: 1.7;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ========== 语言切换按钮 (左上角固定) ========== */
+        .lang-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 30000;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 2px solid #dce6f2;
+            border-radius: 28px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #1e3c72;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            user-select: none;
+            letter-spacing: 0.3px;
+        }
+        .lang-toggle:hover {
+            background: #fff;
+            border-color: #2a6df4;
+            box-shadow: 0 8px 24px rgba(42, 109, 244, 0.18);
+            transform: translateY(-1px);
+        }
+        .lang-toggle .globe-icon {
+            font-size: 1.2rem;
+        }
+        .lang-toggle .lang-text {
+            min-width: 36px;
+            text-align: center;
+        }
+        @media (max-width: 640px) {
+            .lang-toggle {
+                top: 12px;
+                left: 12px;
+                padding: 8px 15px;
+                font-size: 0.85rem;
+                border-radius: 22px;
+            }
         }
 
         .container {
@@ -54,6 +101,7 @@
             background: linear-gradient(135deg, #2a6df4, #1e3c72);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 15px;
         }
 
@@ -216,7 +264,7 @@
             max-width: 100%;
             width: auto;
             max-height: 280px;
-            margin: 0 auto;
+            margin: 0 auto 12px;
             border-radius: 14px;
             border: 2px solid #e8edf3;
             box-shadow: 0 6px 22px rgba(0, 0, 0, 0.10);
@@ -235,7 +283,8 @@
             text-align: center;
             font-size: 0.85rem;
             color: #8899aa;
-            margin-top: 8px;
+            margin-top: 4px;
+            margin-bottom: 10px;
             font-style: italic;
         }
 
@@ -349,8 +398,9 @@
             max-width: 640px;
             width: 90%;
             max-height: 85vh;
-            overflow-y: auto;
-            padding: 40px 35px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
             position: relative;
         }
@@ -361,16 +411,36 @@
             font-size: 2rem;
             color: #aaa;
             cursor: pointer;
+            z-index: 10;
             transition: color 0.2s;
+            line-height: 1;
         }
         .modal-close:hover {
             color: #2a6df4;
         }
         .modal-content h2 {
+            padding: 25px 35px 10px;
+            margin: 0;
+            flex-shrink: 0;
             text-align: center;
-            margin-bottom: 30px;
             color: #1e3c72;
             font-size: 1.6rem;
+        }
+        .modal-body {
+            padding: 0 35px 30px;
+            overflow-y: auto;
+            flex: 1;
+            min-height: 0;
+        }
+        .modal-body::-webkit-scrollbar {
+            width: 6px;
+        }
+        .modal-body::-webkit-scrollbar-thumb {
+            background: #c4cdd6;
+            border-radius: 10px;
+        }
+        .modal-body::-webkit-scrollbar-track {
+            background: transparent;
         }
 
         /* Download section */
@@ -416,17 +486,33 @@
                 border-radius: 10px;
             }
             .modal-content {
-                padding: 28px 18px;
                 border-radius: 18px;
             }
             .modal-content h2 {
+                padding: 20px 18px 8px;
                 font-size: 1.35rem;
-                margin-bottom: 22px;
+            }
+            .modal-body {
+                padding: 0 18px 24px;
+            }
+            .lang-toggle {
+                top: 10px;
+                left: 10px;
+                padding: 7px 14px;
+                font-size: 0.8rem;
+                border-radius: 20px;
             }
         }
     </style>
 </head>
 <body>
+
+    <!-- ========== 语言切换按钮 (左上角固定) ========== -->
+    <button class="lang-toggle" id="langToggle" aria-label="Switch language">
+        <span class="globe-icon">🌐</span>
+        <span class="lang-text" id="langLabel">EN</span>
+    </button>
+
     <div class="container">
         <!-- Header -->
         <header>
@@ -434,11 +520,11 @@
                 <img src="https://cdn.jsdelivr.net/gh/ydtg1993/telegram_cloud@main/tc.png" alt="TelegramCloud Logo">
             </div>
             <h1>TelegramCloud</h1>
-            <div class="subtitle">把 Telegram 变成无限容量的个人云盘，自动同步、多端管理，安全又高速。</div>
+            <div class="subtitle" data-i18n="subtitle">Turn Telegram into your unlimited personal cloud drive with auto-sync, multi-device management, secure and fast.</div>
             <div>
                 <span class="badge">🖥️ Windows</span>
                 <span class="badge">🌐 Telegram MTProto</span>
-                <span class="badge">🔒 端到端加密</span>
+                <span class="badge">🔒 <span data-i18n="badge_e2e">End-to-End Encryption</span></span>
             </div>
         </header>
 
@@ -446,84 +532,84 @@
         <div class="features">
             <div class="feature-card">
                 <div class="feature-icon">📁</div>
-                <h3>文件管理</h3>
-                <p>支持图标 / 列表双视图，拖拽移动、批量删除、重命名，像本地资源管理器一样操作云端文件。</p>
+                <h3 data-i18n="feat1_title">File Management</h3>
+                <p data-i18n="feat1_desc">Supports icon/list dual view, drag-and-drop move, batch delete, rename — operate cloud files just like a local file explorer.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">🔄</div>
-                <h3>自动同步</h3>
-                <p>添加本地文件夹，按分钟/小时/天定时同步到 Telegram 目录，后台静默运行，不影响前台工作。</p>
+                <h3 data-i18n="feat2_title">Auto Sync</h3>
+                <p data-i18n="feat2_desc">Add local folders, sync to Telegram directory on a schedule (by minute/hour/day), running silently in the background.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">👀</div>
-                <h3>文件预览</h3>
-                <p>支持图片、音频（带进度条）、视频、文本文件的在线预览，20MB 以下文件即点即看。</p>
+                <h3 data-i18n="feat3_title">File Preview</h3>
+                <p data-i18n="feat3_desc">Online preview for images, audio (with progress bar), video, and text files. Instant viewing for files under 20MB.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">📊</div>
-                <h3>上传限制</h3>
-                <p>可启用每日上传大小/数量限制，基于北京时间统计，侧边栏滑块实时显示用量。</p>
+                <h3 data-i18n="feat4_title">Upload Limit</h3>
+                <p data-i18n="feat4_desc">Enable daily upload size/count limit based on Beijing time, with a sidebar slider showing real-time usage.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">🔍</div>
-                <h3>智能搜索</h3>
-                <p>文件名模糊搜索，数据量大时自动启用 jieba 分词 + 倒排索引，快速精准定位文件。</p>
+                <h3 data-i18n="feat5_title">Smart Search</h3>
+                <p data-i18n="feat5_desc">Fuzzy filename search, with automatic jieba word segmentation + inverted index for large datasets — fast and accurate.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">🌍</div>
-                <h3>中英文切换</h3>
-                <p>完整支持中文 / English 界面，一键切换，重启生效。</p>
+                <h3 data-i18n="feat6_title">Bilingual UI</h3>
+                <p data-i18n="feat6_desc">Full Chinese / English interface support, one-click switch, takes effect after restart.</p>
             </div>
         </div>
 
         <!-- Screenshots -->
         <div class="screenshots">
-            <h2>软件截图</h2>
+            <h2 data-i18n="screenshots_title">Screenshots</h2>
             <div class="screenshot-grid">
                 <div class="screenshot-placeholder">
                     <div class="img-box">
-                        <img src="https://cdn.jsdelivr.net/gh/ydtg1993/telegram_cloud@main/Capture1.PNG" alt="主界面 - 文件浏览与目录树">
+                        <img src="https://cdn.jsdelivr.net/gh/ydtg1993/telegram_cloud@main/Capture1.PNG" alt="Main interface - file browsing and directory tree" data-i18n-alt="screenshot1_alt">
                     </div>
-                    <small>主界面 - 文件浏览与目录树</small>
+                    <small data-i18n="screenshot1_caption">Main interface - file browsing & directory tree</small>
                 </div>
                 <div class="screenshot-placeholder">
                     <div class="img-box">
-                        <img src="https://cdn.jsdelivr.net/gh/ydtg1993/telegram_cloud@main/Capture2.PNG" alt="自动同步配置界面">
+                        <img src="https://cdn.jsdelivr.net/gh/ydtg1993/telegram_cloud@main/Capture2.PNG" alt="Auto-sync configuration interface" data-i18n-alt="screenshot2_alt">
                     </div>
-                    <small>自动同步配置界面</small>
+                    <small data-i18n="screenshot2_caption">Auto-sync configuration interface</small>
                 </div>
                 <div class="screenshot-placeholder">
                     <div class="img-box">
-                        <img src="https://cdn.jsdelivr.net/gh/ydtg1993/telegram_cloud@main/Capture3.PNG" alt="图片 / 视频在线预览">
+                        <img src="https://cdn.jsdelivr.net/gh/ydtg1993/telegram_cloud@main/Capture3.PNG" alt="Image/video online preview" data-i18n-alt="screenshot3_alt">
                     </div>
-                    <small>图片 / 视频在线预览</small>
+                    <small data-i18n="screenshot3_caption">Image / Video online preview</small>
                 </div>
             </div>
         </div>
 
-        <!-- Setup Guide (also shown in modal) -->
+        <!-- Setup Guide (static) -->
         <div class="setup-guide" id="static-guide">
-            <h2>📋 首次使用：获取 Telegram API 凭据</h2>
+            <h2 data-i18n="guide_title">📋 First Time Setup: Get Telegram API Credentials</h2>
             <div class="guide-content">
                 <div class="guide-step">
                     <div class="step-number">1</div>
                     <div class="step-text">
-                        <strong>访问 Telegram 开发平台</strong>
-                        <p>打开 <a href="https://my.telegram.org" target="_blank">https://my.telegram.org</a>，使用你的 Telegram 账号登录（需要手机接收验证码）。</p>
+                        <strong data-i18n="guide_step1_title">Visit Telegram Developer Platform</strong>
+                        <p data-i18n="guide_step1_desc">Go to <a href="https://my.telegram.org" target="_blank">https://my.telegram.org</a> and log in with your Telegram account (phone verification code required).</p>
                     </div>
                 </div>
                 <div class="guide-step">
                     <div class="step-number">2</div>
                     <div class="step-text">
-                        <strong>创建应用</strong>
-                        <p>登录后点击 "API development tools"，填写应用名称（如 "TelegramCloud"）和短名称，提交后即可获得 <code>api_id</code> 和 <code>api_hash</code>。</p>
+                        <strong data-i18n="guide_step2_title">Create an Application</strong>
+                        <p data-i18n="guide_step2_desc">After logging in, click "API development tools", fill in an app name (e.g. "TelegramCloud") and a short name, then submit to get your <code>api_id</code> and <code>api_hash</code>.</p>
                     </div>
                 </div>
                 <div class="guide-step">
                     <div class="step-number">3</div>
                     <div class="step-text">
-                        <strong>在软件中填写</strong>
-                        <p>打开 TelegramCloud，在弹出的登录窗口中输入刚才获得的 <code>api_id</code>、<code>api_hash</code> 以及你的手机号码，完成验证即可开始使用。</p>
+                        <strong data-i18n="guide_step3_title">Fill in the Software</strong>
+                        <p data-i18n="guide_step3_desc">Open TelegramCloud, enter the <code>api_id</code>, <code>api_hash</code> and your phone number in the login window, complete verification to start using.</p>
                     </div>
                 </div>
             </div>
@@ -531,80 +617,78 @@
 
         <!-- Download -->
         <div class="download">
-            <h2 style="font-size: 2rem; margin-bottom: 15px;">立即下载</h2>
-            <p>完全免费，开源项目。Windows 安装包，支持自定义安装路径和开机自启。</p>
+            <h2 style="font-size: 2rem; margin-bottom: 15px;" data-i18n="download_title">Download Now</h2>
+            <p data-i18n="download_desc">Completely free, open-source project. Windows installer with custom install path and auto-start support.</p>
             <div style="display: flex; justify-content: center; flex-wrap: wrap; align-items: center;">
-                <a href="https://github.com/ydtg1993/telegram_cloud/releases/download/v1.1.0/TelegramCloud_Setup.exe" class="btn btn-primary" target="_blank">
-                    ⬇️ 下载安装包
+                <a href="https://github.com/ydtg1993/telegram_cloud/releases/download/v1.1.0/TelegramCloud_Setup.exe" class="btn btn-primary" target="_blank" data-i18n="download_btn">
+                    ⬇️ Download Installer
                 </a>
-                <button class="btn btn-outline" id="show-guide-btn">
-                    📋 账号注册
+                <button class="btn btn-outline" id="show-guide-btn" data-i18n="guide_btn">
+                    📋 Account Setup
                 </button>
             </div>
-            <p style="margin-top: 20px; font-size: 0.9rem;">
-                当前版本 v1.1.0 · 适用于 Windows 10/11
+            <p style="margin-top: 20px; font-size: 0.9rem;" data-i18n="version_info">
+                Current version v1.1.0 · Compatible with Windows 10/11
             </p>
         </div>
 
         <!-- Footer -->
         <footer>
-            <p>© 2025 TelegramCloud. 基于 PySide6 + Pyrogram 构建。使用 Telegram 服务请遵守其服务条款。</p>
+            <p data-i18n="footer_text">© 2025 TelegramCloud. Built with PySide6 + Pyrogram. Please comply with Telegram's Terms of Service.</p>
         </footer>
     </div>
 
     <!-- Lightbox for images -->
     <div id="lightbox" class="lightbox">
         <span class="lightbox-close">&times;</span>
-        <img src="" alt="预览大图" id="lightbox-img">
+        <img src="" alt="Preview large image" id="lightbox-img" data-i18n-alt="lightbox_alt">
     </div>
 
     <!-- Guide Modal -->
     <div id="guide-modal" class="modal">
         <div class="modal-content">
             <span class="modal-close">&times;</span>
-            <h2>📋 Telegram API 凭据获取教程</h2>
-            <div class="guide-content">
-                <div class="guide-step">
-                    <div class="step-number">1</div>
-                    <div class="step-text">
-                        <strong>访问 Telegram 开发平台</strong>
-                        <p>打开 <a href="https://my.telegram.org" target="_blank">https://my.telegram.org</a>，使用你的 Telegram 账号登录（需要手机接收验证码）。</p>
-                        <div class="step-image-wrapper">
-                            <img src="https://cdn.jsdelivr.net/gh/ydtg1993/telegram_cloud@main/step1.PNG" alt="访问 my.telegram.org 并登录" loading="lazy">
-                            <span class="step-image-caption">▲ 示意图：使用手机号登录 my.telegram.org</span>
+            <h2 data-i18n="modal_title">📋 Telegram API Credentials Tutorial</h2>
+            <div class="modal-body">
+                <div class="guide-content">
+                    <div class="guide-step">
+                        <div class="step-number">1</div>
+                        <div class="step-text">
+                            <strong data-i18n="modal_step1_title">Visit Telegram Developer Platform</strong>
+                            <p data-i18n="modal_step1_desc">Go to <a href="https://my.telegram.org" target="_blank">https://my.telegram.org</a> and log in with your Telegram account (phone verification code required).</p>
+                            <div class="step-image-wrapper">
+                                <img src="https://cdn.jsdelivr.net/gh/ydtg1993/telegram_cloud@main/step1.PNG" alt="Visit my.telegram.org and log in" loading="lazy" data-i18n-alt="modal_step1_img_alt">
+                                <span class="step-image-caption" data-i18n="modal_step1_caption">▲ Screenshot: Log in to my.telegram.org with your phone number</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="guide-step">
-                    <div class="step-number">2</div>
-                    <div class="step-text">
-                        <strong>创建应用</strong>
-                        <p>登录后点击 "API development tools"，填写应用名称（如 "TelegramCloud"）和短名称，提交后即可获得 <code>api_id</code> 和 <code>api_hash</code>。</p>
-                        <div class="step-image-wrapper">
-                            <img src="https://cdn.jsdelivr.net/gh/ydtg1993/telegram_cloud@main/step2.PNG" alt="创建 Telegram 应用获取凭据" loading="lazy">
-                            <span class="step-image-caption">▲ 示意图：填写应用信息并获取 api_id 与 api_hash</span>
+                    <div class="guide-step">
+                        <div class="step-number">2</div>
+                        <div class="step-text">
+                            <strong data-i18n="modal_step2_title">Create an Application</strong>
+                            <p data-i18n="modal_step2_desc">After logging in, click "API development tools", fill in an app name (e.g. "TelegramCloud") and a short name, then submit to get your <code>api_id</code> and <code>api_hash</code>.</p>
+                            <div class="step-image-wrapper">
+                                <img src="https://cdn.jsdelivr.net/gh/ydtg1993/telegram_cloud@main/step2.PNG" alt="Click API development tools" loading="lazy" data-i18n-alt="modal_step2_img1_alt">
+                                <span class="step-image-caption" data-i18n="modal_step2_caption1">Click "API development tools"</span>
+                                <img src="https://cdn.jsdelivr.net/gh/ydtg1993/telegram_cloud@main/step3.PNG" alt="Fill in app info to get api_id and api_hash" loading="lazy" data-i18n-alt="modal_step2_img2_alt">
+                                <span class="step-image-caption" data-i18n="modal_step2_caption2">▲ Screenshot: Fill in app info and get api_id & api_hash</span>
+                                <img src="https://cdn.jsdelivr.net/gh/ydtg1993/telegram_cloud@main/step4.PNG" alt="Keep your api_id and api_hash safe" loading="lazy" data-i18n-alt="modal_step2_img3_alt">
+                                <span class="step-image-caption" data-i18n="modal_step2_caption3">Keep your api_id and api_hash safe</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="guide-step">
-                    <div class="step-number">3</div>
-                    <div class="step-text">
-                        <strong>在软件中填写</strong>
-                        <p>打开 TelegramCloud，在弹出的登录窗口中输入刚才获得的 <code>api_id</code>、<code>api_hash</code> 以及你的手机号码，完成验证即可开始使用。</p>
-                        <div class="step-image-wrapper">
-                            <img src="https://cdn.jsdelivr.net/gh/ydtg1993/telegram_cloud@main/step3.PNG" alt="在 TelegramCloud 软件中填写凭据" loading="lazy">
-                            <span class="step-image-caption">▲ 示意图：在软件登录界面填入凭据完成验证</span>
+                    <div class="guide-step">
+                        <div class="step-number">3</div>
+                        <div class="step-text">
+                            <strong data-i18n="modal_step3_title">Fill in the Software</strong>
+                            <p data-i18n="modal_step3_desc">Open TelegramCloud, enter the <code>api_id</code>, <code>api_hash</code> and your phone number in the login window, complete verification to start using.</p>
                         </div>
                     </div>
-                </div>
-                <div class="guide-step">
-                    <div class="step-number">💡</div>
-                    <div class="step-text">
-                        <strong>注意事项</strong>
-                        <p>请妥善保管你的 <code>api_id</code> 和 <code>api_hash</code>，不要泄露给他人。每个账号可以创建多个应用，如果遇到问题可重新创建。</p>
-                       <div class="step-image-wrapper">
-                            <img src="https://cdn.jsdelivr.net/gh/ydtg1993/telegram_cloud@main/step3.PNG" alt="在 TelegramCloud 软件中填写凭据" loading="lazy">
-                            <span class="step-image-caption">▲ 示意图：请妥善保管你的app_id和api_hash</span>
+                    <div class="guide-step">
+                        <div class="step-number">💡</div>
+                        <div class="step-text">
+                            <strong data-i18n="modal_note_title">Important Notes</strong>
+                            <p data-i18n="modal_note_desc">Please keep your <code>api_id</code> and <code>api_hash</code> secure. Do not share them with others. Each account can create multiple apps. If you encounter issues, you can recreate them.</p>
                         </div>
                     </div>
                 </div>
@@ -613,12 +697,190 @@
     </div>
 
     <script>
-        // Image lightbox
+        // ========== 国际化翻译数据 ==========
+        const translations = {
+            en: {
+                pageTitle: "TelegramCloud - Turn Telegram into Your Private Cloud Drive",
+                subtitle: "Turn Telegram into your unlimited personal cloud drive with auto-sync, multi-device management, secure and fast.",
+                badge_e2e: "End-to-End Encryption",
+                feat1_title: "File Management",
+                feat1_desc: "Supports icon/list dual view, drag-and-drop move, batch delete, rename — operate cloud files just like a local file explorer.",
+                feat2_title: "Auto Sync",
+                feat2_desc: "Add local folders, sync to Telegram directory on a schedule (by minute/hour/day), running silently in the background.",
+                feat3_title: "File Preview",
+                feat3_desc: "Online preview for images, audio (with progress bar), video, and text files. Instant viewing for files under 20MB.",
+                feat4_title: "Upload Limit",
+                feat4_desc: "Enable daily upload size/count limit based on Beijing time, with a sidebar slider showing real-time usage.",
+                feat5_title: "Smart Search",
+                feat5_desc: "Fuzzy filename search, with automatic jieba word segmentation + inverted index for large datasets — fast and accurate.",
+                feat6_title: "Bilingual UI",
+                feat6_desc: "Full Chinese / English interface support, one-click switch, takes effect after restart.",
+                screenshots_title: "Screenshots",
+                screenshot1_alt: "Main interface - file browsing and directory tree",
+                screenshot1_caption: "Main interface - file browsing & directory tree",
+                screenshot2_alt: "Auto-sync configuration interface",
+                screenshot2_caption: "Auto-sync configuration interface",
+                screenshot3_alt: "Image/video online preview",
+                screenshot3_caption: "Image / Video online preview",
+                guide_title: "📋 First Time Setup: Get Telegram API Credentials",
+                guide_step1_title: "Visit Telegram Developer Platform",
+                guide_step1_desc: 'Go to <a href="https://my.telegram.org" target="_blank">https://my.telegram.org</a> and log in with your Telegram account (phone verification code required).',
+                guide_step2_title: "Create an Application",
+                guide_step2_desc: 'After logging in, click "API development tools", fill in an app name (e.g. "TelegramCloud") and a short name, then submit to get your <code>api_id</code> and <code>api_hash</code>.',
+                guide_step3_title: "Fill in the Software",
+                guide_step3_desc: 'Open TelegramCloud, enter the <code>api_id</code>, <code>api_hash</code> and your phone number in the login window, complete verification to start using.',
+                download_title: "Download Now",
+                download_desc: "Completely free, open-source project. Windows installer with custom install path and auto-start support.",
+                download_btn: "⬇️ Download Installer",
+                guide_btn: "📋 Account Setup",
+                version_info: "Current version v1.1.0 · Compatible with Windows 10/11",
+                footer_text: "© 2025 TelegramCloud. Built with PySide6 + Pyrogram. Please comply with Telegram's Terms of Service.",
+                lightbox_alt: "Preview large image",
+                modal_title: "📋 Telegram API Credentials Tutorial",
+                modal_step1_title: "Visit Telegram Developer Platform",
+                modal_step1_desc: 'Go to <a href="https://my.telegram.org" target="_blank">https://my.telegram.org</a> and log in with your Telegram account (phone verification code required).',
+                modal_step1_img_alt: "Visit my.telegram.org and log in",
+                modal_step1_caption: "▲ Screenshot: Log in to my.telegram.org with your phone number",
+                modal_step2_title: "Create an Application",
+                modal_step2_desc: 'After logging in, click "API development tools", fill in an app name (e.g. "TelegramCloud") and a short name, then submit to get your <code>api_id</code> and <code>api_hash</code>.',
+                modal_step2_img1_alt: "Click API development tools",
+                modal_step2_caption1: 'Click "API development tools"',
+                modal_step2_img2_alt: "Fill in app info to get api_id and api_hash",
+                modal_step2_caption2: "▲ Screenshot: Fill in app info and get api_id & api_hash",
+                modal_step2_img3_alt: "Keep your api_id and api_hash safe",
+                modal_step2_caption3: "Keep your api_id and api_hash safe",
+                modal_step3_title: "Fill in the Software",
+                modal_step3_desc: 'Open TelegramCloud, enter the <code>api_id</code>, <code>api_hash</code> and your phone number in the login window, complete verification to start using.',
+                modal_note_title: "Important Notes",
+                modal_note_desc: 'Please keep your <code>api_id</code> and <code>api_hash</code> secure. Do not share them with others. Each account can create multiple apps. If you encounter issues, you can recreate them.'
+            },
+            zh: {
+                pageTitle: "TelegramCloud - 将 Telegram 变成你的私人云盘",
+                subtitle: "把 Telegram 变成无限容量的个人云盘，自动同步、多端管理，安全又高速。",
+                badge_e2e: "端到端加密",
+                feat1_title: "文件管理",
+                feat1_desc: "支持图标 / 列表双视图，拖拽移动、批量删除、重命名，像本地资源管理器一样操作云端文件。",
+                feat2_title: "自动同步",
+                feat2_desc: "添加本地文件夹，按分钟/小时/天定时同步到 Telegram 目录，后台静默运行，不影响前台工作。",
+                feat3_title: "文件预览",
+                feat3_desc: "支持图片、音频（带进度条）、视频、文本文件的在线预览，20MB 以下文件即点即看。",
+                feat4_title: "上传限制",
+                feat4_desc: "可启用每日上传大小/数量限制，基于北京时间统计，侧边栏滑块实时显示用量。",
+                feat5_title: "智能搜索",
+                feat5_desc: "文件名模糊搜索，数据量大时自动启用 jieba 分词 + 倒排索引，快速精准定位文件。",
+                feat6_title: "中英文切换",
+                feat6_desc: "完整支持中文 / English 界面，一键切换，重启生效。",
+                screenshots_title: "软件截图",
+                screenshot1_alt: "主界面 - 文件浏览与目录树",
+                screenshot1_caption: "主界面 - 文件浏览与目录树",
+                screenshot2_alt: "自动同步配置界面",
+                screenshot2_caption: "自动同步配置界面",
+                screenshot3_alt: "图片 / 视频在线预览",
+                screenshot3_caption: "图片 / 视频在线预览",
+                guide_title: "📋 首次使用：获取 Telegram API 凭据",
+                guide_step1_title: "访问 Telegram 开发平台",
+                guide_step1_desc: '打开 <a href="https://my.telegram.org" target="_blank">https://my.telegram.org</a>，使用你的 Telegram 账号登录（需要手机接收验证码）。',
+                guide_step2_title: "创建应用",
+                guide_step2_desc: '登录后点击 "API development tools"，填写应用名称（如 "TelegramCloud"）和短名称，提交后即可获得 <code>api_id</code> 和 <code>api_hash</code>。',
+                guide_step3_title: "在软件中填写",
+                guide_step3_desc: '打开 TelegramCloud，在弹出的登录窗口中输入刚才获得的 <code>api_id</code>、<code>api_hash</code> 以及你的手机号码，完成验证即可开始使用。',
+                download_title: "立即下载",
+                download_desc: "完全免费，开源项目。Windows 安装包，支持自定义安装路径和开机自启。",
+                download_btn: "⬇️ 下载安装包",
+                guide_btn: "📋 账号注册",
+                version_info: "当前版本 v1.1.0 · 适用于 Windows 10/11",
+                footer_text: "© 2025 TelegramCloud. 基于 PySide6 + Pyrogram 构建。使用 Telegram 服务请遵守其服务条款。",
+                lightbox_alt: "预览大图",
+                modal_title: "📋 Telegram API 凭据获取教程",
+                modal_step1_title: "访问 Telegram 开发平台",
+                modal_step1_desc: '打开 <a href="https://my.telegram.org" target="_blank">https://my.telegram.org</a>，使用你的 Telegram 账号登录（需要手机接收验证码）。',
+                modal_step1_img_alt: "访问 my.telegram.org 并登录",
+                modal_step1_caption: "▲ 示意图：使用手机号登录 my.telegram.org",
+                modal_step2_title: "创建应用",
+                modal_step2_desc: '登录后点击 "API development tools"，填写应用名称（如 "TelegramCloud"）和短名称，提交后即可获得 <code>api_id</code> 和 <code>api_hash</code>。',
+                modal_step2_img1_alt: "点击 API development tools",
+                modal_step2_caption1: '点击 "API development tools"',
+                modal_step2_img2_alt: "填写应用信息获取 api_id 与 api_hash",
+                modal_step2_caption2: "▲ 示意图：填写应用信息并获取 api_id 与 api_hash",
+                modal_step2_img3_alt: "请妥善保管你的 api_id 和 api_hash",
+                modal_step2_caption3: "请妥善保管你的 api_id 和 api_hash",
+                modal_step3_title: "在软件中填写",
+                modal_step3_desc: '打开 TelegramCloud，在弹出的登录窗口中输入刚才获得的 <code>api_id</code>、<code>api_hash</code> 以及你的手机号码，完成验证即可开始使用。',
+                modal_note_title: "注意事项",
+                modal_note_desc: '请妥善保管你的 <code>api_id</code> 和 <code>api_hash</code>，不要泄露给他人。每个账号可以创建多个应用，如果遇到问题可重新创建。'
+            }
+        };
+
+        let currentLang = 'en'; // 默认英语
+
+        // ========== 语言切换逻辑 ==========
+        const langToggle = document.getElementById('langToggle');
+        const langLabel = document.getElementById('langLabel');
+
+        function applyLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+
+            // 更新页面标题
+            document.title = t.pageTitle;
+
+            // 更新带有 data-i18n 属性的元素文本
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key] !== undefined) {
+                    // 如果翻译内容包含 HTML 标签，使用 innerHTML；否则使用 textContent
+                    if (/<[a-zA-Z][\s\S]*?>/.test(t[key])) {
+                        el.innerHTML = t[key];
+                    } else {
+                        el.textContent = t[key];
+                    }
+                }
+            });
+
+            // 更新带有 data-i18n-alt 属性的图片 alt 文本
+            document.querySelectorAll('[data-i18n-alt]').forEach(el => {
+                const key = el.getAttribute('data-i18n-alt');
+                if (t[key] !== undefined) {
+                    el.setAttribute('alt', t[key]);
+                }
+            });
+
+            // 更新语言切换按钮显示
+            if (lang === 'en') {
+                langLabel.textContent = 'EN';
+                document.documentElement.lang = 'en';
+            } else {
+                langLabel.textContent = '中文';
+                document.documentElement.lang = 'zh-CN';
+            }
+        }
+
+        langToggle.addEventListener('click', () => {
+            const newLang = currentLang === 'en' ? 'zh' : 'en';
+            applyLanguage(newLang);
+            // 保存用户偏好
+            try {
+                localStorage.setItem('telegramCloud_lang', newLang);
+            } catch (e) { /* 忽略存储错误 */ }
+        });
+
+        // ========== 初始化：读取保存的语言偏好，默认英语 ==========
+        (function initLanguage() {
+            let savedLang = 'en';
+            try {
+                const stored = localStorage.getItem('telegramCloud_lang');
+                if (stored === 'zh' || stored === 'en') {
+                    savedLang = stored;
+                }
+            } catch (e) { /* 忽略 */ }
+            applyLanguage(savedLang);
+        })();
+
+        // ========== Image lightbox ==========
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
         const lightboxClose = document.querySelector('.lightbox-close');
 
-        // 为所有可点击的图片绑定lightbox（包括截图和modal中的步骤图片）
         function bindLightboxToImages(selector) {
             document.querySelectorAll(selector).forEach(img => {
                 img.addEventListener('click', (e) => {
@@ -630,9 +892,7 @@
             });
         }
 
-        // 绑定截图区域的图片
         bindLightboxToImages('.img-box img');
-        // 绑定modal中步骤教程图片
         bindLightboxToImages('.step-image-wrapper img');
 
         function closeLightbox() {
@@ -651,7 +911,7 @@
             }
         });
 
-        // Guide modal
+        // ========== Guide modal ==========
         const modal = document.getElementById('guide-modal');
         const showGuideBtn = document.getElementById('show-guide-btn');
         const modalClose = document.querySelector('.modal-close');
@@ -669,16 +929,6 @@
         modalClose.addEventListener('click', closeModal);
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeModal();
-        });
-
-        // 点击modal中的图片时也打开lightbox预览
-        document.querySelectorAll('.step-image-wrapper img').forEach(img => {
-            img.addEventListener('click', (e) => {
-                e.stopPropagation();
-                lightboxImg.src = img.src;
-                lightboxImg.alt = img.alt;
-                lightbox.classList.add('active');
-            });
         });
     </script>
 </body>
