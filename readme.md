@@ -53,6 +53,9 @@
 
 > Telegram API 凭据申请：访问 [my.telegram.org](https://my.telegram.org/)，创建应用获取 api_id 和 api_hash。
 
+---
+
+##  [下载最新版](https://github.com/ydtg1993/telegram_cloud/releases/download/v1.1.0/TelegramCloud_Setup.exe)
 
 ## 技术栈与依赖
 
