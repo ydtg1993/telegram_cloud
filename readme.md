@@ -56,6 +56,7 @@
 ---
 
 ##  [下载最新版](https://github.com/ydtg1993/telegram_cloud/releases/download/v1.1.0/TelegramCloud_Setup.exe)
+<a href="https://github.com/ydtg1993/telegram_cloud/releases/download/v1.1.0/TelegramCloud_Setup.exe"><img src="https://cdn.jsdelivr.net/gh/ydtg1993/telegram_cloud@main/tc.png"/></a>
 
 ## 技术栈与依赖
 
