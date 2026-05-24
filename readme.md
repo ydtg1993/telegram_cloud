@@ -58,6 +58,15 @@
 ##  [下载最新版](https://github.com/ydtg1993/telegram_cloud/releases/download/v1.1.0/TelegramCloud_Setup.exe)
 <a href="https://github.com/ydtg1993/telegram_cloud/releases/download/v1.1.0/TelegramCloud_Setup.exe"><img src="https://cdn.jsdelivr.net/gh/ydtg1993/telegram_cloud@main/tc.png"/></a>
 
+## 界面预览
+<table>
+  <tr>
+    <td><img width="300" src="https://cdn.jsdelivr.net/gh/ydtg1993/telegram_cloud@main/Capture1.PNG"/></td>
+    <td><img width="300" src="https://cdn.jsdelivr.net/gh/ydtg1993/telegram_cloud@main/Capture2.PNG"/></td>
+    <td><img width="300" src="https://cdn.jsdelivr.net/gh/ydtg1993/telegram_cloud@main/Capture3.PNG"/></td>
+  </tr>
+</table>
+
 ## 技术栈与依赖
 
 - [PySide6](https://pypi.org/project/PySide6/) - Qt for Python 绑定
